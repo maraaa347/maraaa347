@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" href="./photos/QC.jpg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queen's College Canteen PreOrder Page</title>
@@ -16,6 +17,15 @@
             color: crimson;
             padding: 10px 20px;
             text-align: center;
+        }
+        header img{
+            max-height: 50px;
+            vertical-align: middle;
+        }
+        header h1{
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
         }
         .container {
             max-width: 600px;
@@ -43,9 +53,22 @@
             background: #333;
             color: aliceblue;
             cursor: pointer;
+            margin-top: 15px;
        }
        button:hover {
         background: #555;
+       }
+       .menuimages {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin: 20px 0;
+       }
+       .menuimages img {
+        max-width: 100px;
+        margin: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
        }
 
     </style>
@@ -53,15 +76,51 @@
 <body>
     <header>
         <h1>Queen's College Canteen</h1>
+        <img src="/photos/QC.jpg" alt="School logo" />
         <h1>Place Your Order</h1>
     </header>
     <div class="container">
-        <form action="/submit_order" method="post">
+        <div class="menu images">
+            <img src="/photos/12-CheeseBurgerFries.jpg" alt="Burger Pack">
+            <img src="/photos/1a1f7734998651.56060fded2c71.png" alt="Apple Juice">
+            <img src="/photos/th.jpeg" alt="Pizza">
+            <img src="/photos/best_caesar_salad_recipe-1.jpg" alt="Salad">
+            <img src="/photos/Untitled-design65-1.jpg" alt="Chips">
+            <img src="/photos/th (1).jpeg" alt="Smoothies">
+        </div>
+        <form action="/submit_order" method="POST">
             <label for="name">Full Name:</label>
             <input type="text" id="name" name="name" placeholder="Enter your full name" required>
 
             <label for="class">Class</label>
             <input type="class" name="class" id="class" placeholder="Enter your class" required>
+
+            <label for="item">Select Item:</label>
+            <select name="item" id="item">
+                <option value="">----Choose an Item----</option>
+                <option value="Burger">Burger</option>
+                <option value="Pizza">Pizza</option>
+                <option value="Chips">Chips</option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+
+            <label for="Quantity">Quantity:</label>
+            <input type="number" name="Quantity" id="Quantity" min="1"  max="3" placeholder="Enter Quantity" required>
+
+             <label for="comments">Additional Comments:</label>
+             <textarea name="comments" id="comments rows=4 placeholder="E.g., No sauce with salad OR BBQ sauce with chips" ></textarea>
+
+             <button type="submit">Submit Order</button>
         </form>
 
     </div>
