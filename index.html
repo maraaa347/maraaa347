@@ -27,6 +27,11 @@
             margin-left: 10px;
             vertical-align: middle;
         }
+        header h2{
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -70,60 +75,119 @@
         border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
        }
+       .item-row input, .item-row select {
+        flex: 1;
+        margin-right: 10px;
+       }
+       .total {
+        font-weight: bold;
+        text-align: right;
+        margin-top: 20px;
+       }
 
     </style>
 </head>
 <body>
     <header>
         <h1>Queen's College Canteen</h1>
-        <img src="https://imgur.com/Kor7Bv9" alt="School Logo">
-        <h1>Place Your Order</h1>
+        <img src="https://imgur.com/Kor7Bv9" alt="School Logo" style="width:128px;height:128px;">
+        <h2>Place your Order</h2>
     </header>
-    <div class="container">
-        <div class="menu images">
-            <img src="/photos/12-CheeseBurgerFries.jpg" alt="Burger Pack">
-            <img src="/photos/1a1f7734998651.56060fded2c71.png" alt="Apple Juice">
-            <img src="/photos/th.jpeg" alt="Pizza">
-            <img src="/photos/best_caesar_salad_recipe-1.jpg" alt="Salad">
-            <img src="/photos/Untitled-design65-1.jpg" alt="Chips">
-            <img src="/photos/th (1).jpeg" alt="Smoothies">
-        </div>
-        <form action="/submit_order" method="POST">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-
-            <label for="class">Class</label>
-            <input type="class" name="class" id="class" placeholder="Enter your class" required>
-
-            <label for="item">Select Item:</label>
-            <select name="item" id="item">
-                <option value="">----Choose an Item----</option>
-                <option value="Burger">Burger</option>
-                <option value="Pizza">Pizza</option>
-                <option value="Chips">Chips</option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-                <option value=""></option>
-            </select>
-
-            <label for="Quantity">Quantity:</label>
-            <input type="number" name="Quantity" id="Quantity" min="1"  max="3" placeholder="Enter Quantity" required>
-
-             <label for="comments">Additional Comments:</label>
-             <textarea name="comments" id="comments rows=4 placeholder="E.g., No sauce with salad OR BBQ sauce with chips" ></textarea>
-
-             <button type="submit">Submit Order</button>
-        </form>
-
+    <div class="menu images">
+        <img src="/photos/12-CheeseBurgerFries.jpg" alt="Burger Pack">
+        <img src="/photos/1a1f7734998651.56060fded2c71.png" alt="Apple Juice">
+        <img src="/photos/th.jpeg" alt="Pizza">
+        <img src="/photos/best_caesar_salad_recipe-1.jpg" alt="Salad">
+        <img src="/photos/Untitled-design65-1.jpg" alt="Chips">
+        <img src="/photos/th (1).jpeg" alt="Smoothies">
     </div>
+    <div class="container">
+        <form id="orderform">
+            <div id="orderitems">
+                <div class="item-row">
+                    <select class="item-select" onchange="updatetotal()">
+                        <option value="" data-price="0">-----------------Select Item/s-----------------</option>
+                        <option value="Burger" data-price="9">Burger $9</option>
+                        <option value="Smoothie" data-price="8">Smoothie $8</option>
+                        <option value="Chips" data-price="7.50">Chips $7.50</option>
+                        <option value="Ribs + Chips" data-price="15.50">Ribs + Chips $15.50</option>
+                        <option value="Burger pack" data-price="13.50">Burger pack $13.50</option>
+                        <option value="Fish snack" data-price="13">Fish snack $13</option>
+                        <option value="Salad" data-price="10">Salad $10</option>
+                        <option value="Roasted potatoes + Chicken/Fish" data-price="13">Roasted potatoes + Chicken/Fish $13</option>
+                        <option value="Apple juice (Pinehill)" data-price="2.75">Apple juice (Pinehill) $2.75</option>
+                        <option value="Vitamin water" data-price="4">Vitamin water $4</option>
+                    </select>
+                    <input type="number" class="item-quantity"  min="1" max="3" value="1" onchange="updatetotal()"required>
+                    <button type="button" onclick="removeitem(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button" onclick="addItem()">Add another item</button>
+            <p class="total" id="totalDisplay">Total: $0</p>
+            <form action="/submit_order" method="POST">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+    
+                <label for="class">Class:</label>
+                <input type="class" name="class" id="class" placeholder="Enter your class" required>
+    
+                 <label for="comments">Additional Comments:</label>
+                 <textarea name="comments" id="comments" rows="4" placeholder="E.g. No sauce with salad OR BBQ sauce with chips">E.g. No sauce with salad OR BBQ sauce with chips</textarea>
+    
+                 <button type="submit">Submit Order</button>
+            </form>
+        </form>
+    </div>
+
+    <script>
+        function addItem(){
+            const orderitems= document.getElementById("orderitems");
+            const newItem= document.createElement("div");
+            newItem.className= "item-row";
+            newItem.innerHTML=  `
+            <select class="item-select" onchange="updatetotal()">
+                <option value="" data-price="0">-----------------Select Item-----------------</option>
+                <option value="Burger" data-price="9">Burger $9</option>
+                <option value="Smoothie" data-price="8">Smoothie $8</option>
+                <option value="Chips" data-price="7.50">Chips $7.50</option>
+                <option value="Ribs + Chips" data-price="15.50">Ribs + Chips $15.50</option>
+                <option value="Burger pack" data-price="13.50">Burger pack $13.50</option>
+                <option value="Fish snack" data-price="13">Fish snack $13</option>
+                <option value="Salad" data-price="10">Salad $10</option>
+                <option value="Roasted potatoes + Chicken/Fish" data-price="13">Roasted potatoes + Chicken/Fish $13</option>
+                <option value="Apple juice (Pinehill)" data-price="2.75">Apple juice (Pinehill) $2.75</option>
+                <option value="Vitamin water" data-price="4">Vitamin water $4</option>
+           </select>
+            <input type="number" class="item-quantity"  min="1" max="3" value="1" onchange="updatetotal()"required>
+            <button type="button" onclick="removeitem(this)">Remove</button>
+            `;
+                                 
+            orderItems.appendChild(newItem);
+        }   
+        
+        function removeitem(button) {
+            button.parentElement.remove();
+            updatetotal();
+        }
+        function updatetotal() {
+            const items= document.querySelectorAll(".item-row");
+            let total=0;
+            items.forEach(item => {
+                const select= item.querySelector(".item-select");
+                const Quantity= item.querySelector(".item-quantity").value;
+                const price= select.options[select.selectedIndex].getAttribute("data-price");
+                total += parseFloat(price) * parseInt(quality || 0);
+            });
+            document.getElementById("totalDisplay").textContent = `Total: $${(total.toFixed(2))}`;
+        }
+
+        document.getElementById("orderForm").addEventListener("submit", function(event){
+            event.preventDefault();
+            alert("Order submitted successfully!");
+            alert("Thank you for using our website. Have a great day!!");
+        });
+        
+    </script>
 </body>
 </html>
 
